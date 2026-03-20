@@ -1,16 +1,13 @@
-name: Deploy PWA to GitHub Pages
+name: Deploy PWA to Vercel
 
 on:
   push:
     branches:
       - PWA
 
-permissions:
-  contents: write
-
 jobs:
-  build-and-deploy:
-    name: Build & Deploy
+  deploy:
+    name: Build & Deploy to Vercel
     runs-on: ubuntu-latest
 
     steps:
@@ -24,25 +21,13 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Build Expo web export
-        run: npx expo export --platform web
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy to Vercel (Production)
+        run: vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          NODE_ENV: production
-
-      - name: Copy public assets to dist
-        run: |
-          cp public/manifest.json dist/manifest.json
-          cp public/service-worker.js dist/service-worker.js
-
-      - name: Add .nojekyll (for GitHub Pages)
-        run: touch dist/.nojekyll
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          force_orphan: true
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
