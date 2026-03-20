@@ -36,6 +36,13 @@
     </noscript>
     <div id="root"></div>
 
+    <!-- Redirect root to splash -->
+    <script>
+      if (window.location.pathname === '/') {
+        window.location.replace('/splash');
+      }
+    </script>
+
     <!-- Register Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
