@@ -1,0 +1,48 @@
+name: Deploy PWA to GitHub Pages
+
+on:
+  push:
+    branches:
+      - PWA
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Expo web export
+        run: npx expo export --platform web
+        env:
+          NODE_ENV: production
+
+      - name: Copy public assets to dist
+        run: |
+          cp public/manifest.json dist/manifest.json
+          cp public/service-worker.js dist/service-worker.js
+
+      - name: Add .nojekyll (for GitHub Pages)
+        run: touch dist/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true

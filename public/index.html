@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover"
+    />
+
+    <!-- PWA Essentials -->
+    <meta name="theme-color" content="#1a1a2e" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="vasApp" />
+
+    <!-- SEO & description -->
+    <meta name="application-name" content="vasApp" />
+    <meta
+      name="description"
+      content="VAS App - Value Added Services mobile wallet"
+    />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="apple-touch-icon" href="/assets/icon.png" />
+
+    <title>vasApp</title>
+  </head>
+  <body>
+    <noscript>
+      <p>You need to enable JavaScript to run this app.</p>
+    </noscript>
+    <div id="root"></div>
+
+    <!-- Register Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .then(function (registration) {
+              console.log('[App] Service Worker registered:', registration.scope);
+            })
+            .catch(function (error) {
+              console.warn('[App] Service Worker registration failed:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

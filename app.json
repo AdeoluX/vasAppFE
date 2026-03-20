@@ -22,7 +22,15 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "static",
+      "bundler": "metro",
+      "name": "vasApp",
+      "shortName": "vasApp",
+      "description": "VAS App - Value Added Services mobile wallet",
+      "themeColor": "#1a1a2e",
+      "backgroundColor": "#ffffff",
+      "lang": "en"
     },
     "plugins": ["expo-router"],
     "scheme": "vasApp"

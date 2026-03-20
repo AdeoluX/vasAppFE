@@ -1,0 +1,27 @@
+{
+  "name": "vasApp",
+  "short_name": "vasApp",
+  "description": "VAS App - Value Added Services mobile wallet",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a2e",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/assets/adaptive-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["finance", "utilities"],
+  "screenshots": []
+}
