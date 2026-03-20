@@ -1,6 +1,6 @@
 /**
- * Post-build script: copies PWA assets (icons, manifest, service-worker)
- * into the Expo web export dist/ folder after `expo export --platform web`.
+ * Post-build script: copies PWA assets and patches dist/index.html
+ * with required PWA meta tags that Expo's static export omits.
  */
 const fs = require('fs');
 const path = require('path');
@@ -17,12 +17,47 @@ function copy(src, dest) {
 
 console.log('\n📦 Copying PWA assets into dist/\n');
 
-// Icons: copy and rename to match manifest.json
-copy(path.join(ASSETS, 'adaptive-icon.png'), path.join(DIST, 'icon-192.png'));
-copy(path.join(ASSETS, 'icon.png'),           path.join(DIST, 'icon-512.png'));
+// Use logo.png as the PWA icon for both sizes
+copy(path.join(ASSETS, 'logo.png'), path.join(DIST, 'icon-192.png'));
+copy(path.join(ASSETS, 'logo.png'), path.join(DIST, 'icon-512.png'));
 
 // Manifest & service worker from public/
-copy(path.join(PUBLIC, 'manifest.json'),    path.join(DIST, 'manifest.json'));
+copy(path.join(PUBLIC, 'manifest.json'),     path.join(DIST, 'manifest.json'));
 copy(path.join(PUBLIC, 'service-worker.js'), path.join(DIST, 'service-worker.js'));
+
+// Patch dist/index.html — inject PWA meta tags into <head>
+console.log('\n🔧 Patching dist/index.html with PWA meta tags\n');
+const indexPath = path.join(DIST, 'index.html');
+let html = fs.readFileSync(indexPath, 'utf8');
+
+const PWA_TAGS = `
+  <!-- PWA: Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+  <!-- PWA: Theme & Icons -->
+  <meta name="theme-color" content="#1a1a2e" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="vasApp" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <!-- PWA: Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(function(r){ console.log('[SW] Registered:', r.scope); })
+          .catch(function(e){ console.warn('[SW] Failed:', e); });
+      });
+    }
+  </script>`;
+
+// Inject before </head>
+if (html.includes('</head>')) {
+  html = html.replace('</head>', PWA_TAGS + '\n</head>');
+  fs.writeFileSync(indexPath, html);
+  console.log('  ✓ Injected manifest link, theme-color, apple-touch-icon, SW registration');
+} else {
+  console.warn('  ⚠ Could not find </head> in dist/index.html — skipping patch');
+}
 
 console.log('\n✅ PWA assets ready in dist/\n');
