@@ -23,6 +23,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build Expo web export + copy PWA assets
+        run: npm run build:web
+        env:
+          NODE_ENV: production
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 

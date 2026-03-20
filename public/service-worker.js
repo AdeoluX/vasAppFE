@@ -4,10 +4,9 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/assets/icon.png',
-  '/assets/adaptive-icon.png',
-  '/assets/favicon.png',
-  '/assets/splash.png',
+  '/favicon.ico',
+  '/icon-192.png',
+  '/icon-512.png',
 ];
 
 // Install: cache static assets
