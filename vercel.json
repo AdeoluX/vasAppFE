@@ -1,8 +1,15 @@
 {
-  "buildCommand": "npx expo export --platform web",
+  "buildCommand": "npm run build:web",
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": null,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/splash",
+      "permanent": false
+    }
+  ],
   "routes": [
     {
       "src": "/service-worker.js",

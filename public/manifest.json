@@ -2,7 +2,7 @@
   "name": "vasApp",
   "short_name": "vasApp",
   "description": "VAS App - Value Added Services mobile wallet",
-  "start_url": "/",
+  "start_url": "/splash",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
