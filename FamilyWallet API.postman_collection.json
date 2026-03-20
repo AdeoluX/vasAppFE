@@ -1,0 +1,1007 @@
+{
+	"info": {
+		"_postman_id": "fc323769-0f5b-4299-a14e-637521c08904",
+		"name": "FamilyWallet API",
+		"description": "API documentation for the FamilyWallet VAS Application.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13757279",
+		"_collection_link": "https://cloudy-sunset-200041.postman.co/workspace/My-Workspace~978e8923-cb85-472f-8589-2c9cfd24ca9f/collection/13757279-fc323769-0f5b-4299-a14e-637521c08904?action=share&source=collection_link&creator=13757279"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"john@example.com\",\n    \"phone\": \"08012345678\",\n    \"password\": \"Password123\",\n    \"confirmPassword\": \"Password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"john@example.com\",\n    \"phone\": \"08012345678\",\n    \"password\": \"Password123\",\n    \"confirmPassword\": \"Password123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "184"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b8-cG34XsvkVDqHFfXi++OoHM4JL1s\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 16 Mar 2026 23:26:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"success\": \"true\",\n    \"message\": \"Success\",\n    \"data\": {\n        \"message\": \"Registration successful. Please verify your account with the OTP sent to your phone.\",\n        \"email\": \"john@example.com\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Activate Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"otp\": \"358217\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/activate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"activate"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"otp\": \"358217\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/auth/activate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"activate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "122"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"7a-N+3T0geU5tqJV6P74qBpaRrSGWM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 16 Mar 2026 23:27:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"success\": \"true\",\n    \"message\": \"Success\",\n    \"data\": {\n        \"message\": \"Account activated and wallet created successfully\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"Password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"Password123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "817"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"331-sTNqgsBZsWpcgE0dZGE+4B0ytJE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 16 Mar 2026 23:29:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"success\": \"true\",\n    \"message\": \"Success\",\n    \"data\": {\n        \"_id\": \"69b891ad809012722bf042bd\",\n        \"email\": \"john@example.com\",\n        \"phone\": \"08012345678\",\n        \"firstName\": \"John\",\n        \"lastName\": \"Doe\",\n        \"accountType\": \"solo\",\n        \"isActive\": true,\n        \"createdAt\": \"2026-03-16T23:26:37.863Z\",\n        \"__v\": 0,\n        \"walletId\": \"69b891f2809012722bf042c2\",\n        \"token\": {\n            \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Yjg5MWFkODA5MDEyNzIyYmYwNDJiZCIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImFjY291bnRUeXBlIjoic29sbyIsImlhdCI6MTc3MzcwMzc1NCwiZXhwIjoxNzc2Mjk1NzU0fQ.Y7QfUMy5X_NG5S7D-pEUM-hLooN1DbIaSqH_7qdWeJ4\",\n            \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Yjg5MWFkODA5MDEyNzIyYmYwNDJiZCIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImFjY291bnRUeXBlIjoic29sbyIsImlhdCI6MTc3MzcwMzc1NCwiZXhwIjoxNzczNzkwMTU0fQ.3n2uBea0AhblRgwH2g9Mf0vVx8f8B9l040XcNxE3Jcw\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/forgot-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"otp\": \"123456\",\n    \"newPassword\": \"NewPassword123\",\n    \"confirmPassword\": \"NewPassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group",
+			"item": [
+				{
+					"name": "Create Group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"groupName\": \"The Doe Family\",\n    \"groupType\": \"family\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/group/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"group",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"groupId\": \"GROUP_ID_HERE\",\n    \"email\": \"member@example.com\",\n    \"phone\": \"08087654321\",\n    \"spendLimit\": 5000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/group/member/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"group",
+								"member",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Limit",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"groupMemberId\": \"MEMBER_RECORD_ID_HERE\",\n    \"newLimit\": 10000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/group/member/limit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"group",
+								"member",
+								"limit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wallet",
+			"item": [
+				{
+					"name": "Initialize Funding",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/wallet/fund/init",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"fund",
+								"init"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/wallet/balance?groupId=OPTIONAL_GROUP_ID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"balance"
+							],
+							"query": [
+								{
+									"key": "groupId",
+									"value": "OPTIONAL_GROUP_ID"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"item": [
+				{
+					"name": "Buy Airtime",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"service\": \"airtime\",\n    \"amount\": 100,\n    \"recipient\": \"08012345678\",\n    \"network\": \"MTN\",\n    \"groupId\": \"OPTIONAL_GROUP_ID_FOR_GROUP_SPEND\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/purchase/buy",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"purchase",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"service\": \"data\",\n    \"amount\": 1000,\n    \"recipient\": \"08012345678\",\n    \"network\": \"MTN\",\n    \"bundleId\": \"DATA_PLAN_ID_HERE\",\n    \"groupId\": \"OPTIONAL_GROUP_ID_FOR_GROUP_SPEND\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/purchase/buy",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"purchase",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Webhook",
+			"item": [
+				{
+					"name": "Paystack Webhook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-paystack-signature",
+								"value": "SIGNATURE_HERE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"charge.success\",\n    \"data\": {\n        \"id\": 5942084262,\n        \"domain\": \"test\",\n        \"status\": \"success\",\n        \"reference\": \"xl801scbyl\",\n        \"amount\": 100000,\n        \"message\": null,\n        \"gateway_response\": \"Successful\",\n        \"paid_at\": \"2026-03-16T23:33:43.000Z\",\n        \"created_at\": \"2026-03-16T23:33:27.000Z\",\n        \"channel\": \"card\",\n        \"currency\": \"NGN\",\n        \"ip_address\": \"105.119.28.225\",\n        \"metadata\": {\n            \"userId\": \"69b891ad809012722bf042bd\",\n            \"groupId\": \"\"\n        },\n        \"fees_breakdown\": null,\n        \"log\": null,\n        \"fees\": 1500,\n        \"fees_split\": null,\n        \"authorization\": {\n            \"authorization_code\": \"AUTH_5gdmlpx1ie\",\n            \"bin\": \"408408\",\n            \"last4\": \"4081\",\n            \"exp_month\": \"12\",\n            \"exp_year\": \"2030\",\n            \"channel\": \"card\",\n            \"card_type\": \"visa \",\n            \"bank\": \"TEST BANK\",\n            \"country_code\": \"NG\",\n            \"brand\": \"visa\",\n            \"reusable\": true,\n            \"signature\": \"SIG_0HTC2b5qIxNp0k88v8af\",\n            \"account_name\": null,\n            \"receiver_bank_account_number\": null,\n            \"receiver_bank\": null\n        },\n        \"customer\": {\n            \"id\": 304261516,\n            \"first_name\": null,\n            \"last_name\": null,\n            \"email\": \"john@example.com\",\n            \"customer_code\": \"CUS_xmwa427zpqhjdmw\",\n            \"phone\": null,\n            \"metadata\": null,\n            \"risk_action\": \"default\",\n            \"international_format_phone\": null\n        },\n        \"plan\": {},\n        \"subaccount\": {},\n        \"split\": {},\n        \"order_id\": null,\n        \"paidAt\": \"2026-03-16T23:33:43.000Z\",\n        \"requested_amount\": 100000,\n        \"pos_transaction_data\": null,\n        \"source\": {\n            \"type\": \"api\",\n            \"source\": \"merchant_api\",\n            \"entry_point\": \"transaction_initialize\",\n            \"identifier\": null\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/webhook/paystack",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"webhook",
+								"paystack"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utility",
+			"item": [
+				{
+					"name": "Get Networks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/utility/networks?type=data",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"utility",
+								"networks"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "data"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Networks",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/utility/networks?type=airtime",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"utility",
+										"networks"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "airtime"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "202"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ca-QHI8xLYWDPY4tq56zcOyyeViYGI\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 17 Mar 2026 13:14:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"success\": \"true\",\n    \"message\": \"Networks retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": \"mtn\",\n            \"name\": \"MTN\"\n        },\n        {\n            \"id\": \"glo\",\n            \"name\": \"GLO\"\n        },\n        {\n            \"id\": \"airtel\",\n            \"name\": \"AIRTEL\"\n        },\n        {\n            \"id\": \"9mobile\",\n            \"name\": \"9MOBILE\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "200 Data",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/utility/networks?type=data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"utility",
+										"networks"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "data"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "405"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"195-1bph8Apd9uGqidj8Xnefcik8Lx8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 17 Mar 2026 13:15:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"success\": \"true\",\n    \"message\": \"Networks retrieved successfully\",\n    \"data\": [\n        {\n            \"name\": \"MTN (Gifting)\",\n            \"identifier\": \"mtn_gifting_data\"\n        },\n        {\n            \"name\": \"GLO DATA\",\n            \"identifier\": \"glo_data\"\n        },\n        {\n            \"name\": \"AIRTEL (GIFTING)\",\n            \"identifier\": \"airtel_data\"\n        },\n        {\n            \"name\": \"9MOBILE\",\n            \"identifier\": \"9mobile_data\"\n        },\n        {\n            \"name\": \"9MOBILE (GIFTING)\",\n            \"identifier\": \"9mobile_gifting\"\n        },\n        {\n            \"name\": \"MTN (Data Share)\",\n            \"identifier\": \"mtn_data_share\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Data Plans",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/utility/data-plans?networkId=mtn_data_share",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"utility",
+								"data-plans"
+							],
+							"query": [
+								{
+									"key": "networkId",
+									"value": "mtn_data_share"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/utility/data-plans?networkId=mtn_data_share",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"utility",
+										"data-plans"
+									],
+									"query": [
+										{
+											"key": "networkId",
+											"value": "mtn_data_share"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "623"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26f-Mr2vD42NEFS/ob/q3JPjFshOatY\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 17 Mar 2026 13:24:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"success\": \"true\",\n    \"message\": \"Data plans retrieved successfully\",\n    \"data\": [\n        {\n            \"plan_code\": \"M500MBS\",\n            \"amount\": 450,\n            \"label\": \"500MB = N450 (7 Days)\"\n        },\n        {\n            \"plan_code\": \"M1GBS\",\n            \"amount\": 500,\n            \"label\": \"1GB = N500 (7 Days)\"\n        },\n        {\n            \"plan_code\": \"M2GBS\",\n            \"amount\": 980,\n            \"label\": \"2GB = N980 (7 Days)\"\n        },\n        {\n            \"plan_code\": \"M3GBS\",\n            \"amount\": 1300,\n            \"label\": \"3GB = N1300 (7 Days)\"\n        },\n        {\n            \"plan_code\": \"M1GBS2\",\n            \"amount\": 650,\n            \"label\": \"1GB = N650 (30 Days)\"\n        },\n        {\n            \"plan_code\": \"M2GBS\",\n            \"amount\": 1100,\n            \"label\": \"2GB = N1100 (30 Days)\"\n        },\n        {\n            \"plan_code\": \"M3GBS\",\n            \"amount\": 1400,\n            \"label\": \"3GB = N1400 (30 Days)\"\n        },\n        {\n            \"plan_code\": \"M5GBS\",\n            \"amount\": 1950,\n            \"label\": \"5GB = N1950 (30 Days)\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "YOUR_JWT_TOKEN_HERE",
+			"type": "string"
+		}
+	]
+}
