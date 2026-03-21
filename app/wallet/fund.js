@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, SafeAreaView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Theme } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import * as api from '../../constants/api';
-import WebView from 'react-native-webview';
+
+// WebView is native-only — import conditionally to avoid crashing on web
+let WebView = null;
+if (Platform.OS !== 'web') {
+  WebView = require('react-native-webview').default;
+}
 
 export default function FundWallet() {
   const router = useRouter();
@@ -60,7 +65,50 @@ export default function FundWallet() {
     true; // note: this is required, or you'll sometimes get silent failures
   `;
 
-  // If a checkout URL is available, render the WebView instead of the form
+  // ── Web: render an iframe ──────────────────────────────────────────────
+  const iframeContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web' || !checkoutUrl || !iframeContainerRef.current) return;
+
+    const iframe = document.createElement('iframe');
+    iframe.src = checkoutUrl;
+    iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+    iframe.title = 'Payment';
+    iframeContainerRef.current.appendChild(iframe);
+
+    // Listen for Paystack postMessage success
+    const handleMessage = (e) => {
+      if (String(e.data).includes('SUCCESS') || String(e.data).includes('success')) {
+        setTimeout(() => router.replace('/mainapp/home'), 3000);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      if (iframeContainerRef.current && iframeContainerRef.current.contains(iframe)) {
+        iframeContainerRef.current.removeChild(iframe);
+      }
+    };
+  }, [checkoutUrl]);
+
+  if (checkoutUrl && Platform.OS === 'web') {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: Theme.colors.surface }}>
+        <View style={styles.webviewHeader}>
+          <TouchableOpacity onPress={() => setCheckoutUrl(null)} style={styles.closeBtn}>
+            <Ionicons name="close" size={28} color={Theme.colors.text} />
+            <Text style={styles.closeBtnText}>Close &amp; Return</Text>
+          </TouchableOpacity>
+        </View>
+        {/* iframe injected here by useEffect */}
+        <View ref={iframeContainerRef} style={{ flex: 1 }} />
+      </SafeAreaView>
+    );
+  }
+
+  // ── Native: render react-native-webview ────────────────────────────────
   if (checkoutUrl) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Theme.colors.surface }}>
