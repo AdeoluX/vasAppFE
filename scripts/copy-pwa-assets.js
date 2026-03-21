@@ -40,6 +40,26 @@ const PWA_TAGS = `
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="vasApp" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
+  <!-- PWA: Global UI fixes -->
+  <style>
+    /* Hide scrollbars on all scroll containers */
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    *::-webkit-scrollbar {
+      display: none;
+    }
+    /* Remove browser focus outline/highlight from all inputs */
+    input, textarea, select, [contenteditable] {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    input:focus, textarea:focus, select:focus, [contenteditable]:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  </style>
   <!-- PWA: Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
