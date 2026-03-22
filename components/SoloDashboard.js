@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { Theme } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -21,7 +21,7 @@ export default function SoloDashboard() {
   const [transactions, setTransactions] = useState([]); // Mock for MVP until endpoint confirmed
   const [userGroups, setUserGroups] = useState([]);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       if (user?.accountType !== 'solo') {
          try {
@@ -64,11 +64,17 @@ export default function SoloDashboard() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [user]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchDashboardData();
+    }, [fetchDashboardData])
+  );
 
   useEffect(() => {
     fetchDashboardData();
-  }, [user]);
+  }, [fetchDashboardData, user]);
 
   const onRefresh = () => {
     setRefreshing(true);
