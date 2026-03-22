@@ -78,7 +78,10 @@ self.addEventListener('fetch', (event) => {
 
 // Push Notification Listeners
 self.addEventListener('push', (event) => {
+  console.log('[SW] Push Received:', event);
+  
   if (!(self.Notification && self.Notification.permission === 'granted')) {
+    console.warn('[SW] Notification permission not granted.');
     return;
   }
 
@@ -86,9 +89,13 @@ self.addEventListener('push', (event) => {
   if (event.data) {
     try {
       data = event.data.json();
+      console.log('[SW] Push data parsed:', data);
     } catch (e) {
       data = { title: 'New Message', body: event.data.text() };
+      console.warn('[SW] Push data failed to parse as JSON:', e);
     }
+  } else {
+    console.warn('[SW] Push received with no data.');
   }
 
   const options = {
@@ -101,6 +108,8 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(data.title, options)
+      .then(() => console.log('[SW] Notification shown successfully'))
+      .catch(err => console.error('[SW] Failed to show notification:', err))
   );
 });
 
