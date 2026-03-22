@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useCallback, useRef } from 'react';
+import React, { createContext, useState, useContext, useCallback, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, SafeAreaView } from 'react-native';
 import { Theme } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
