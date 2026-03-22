@@ -41,7 +41,7 @@ export default function AddMember() {
       await api.addGroupMember(payload);
       
       Alert.alert('Success', 'Member invited. They will receive an SMS with the app link.', [
-        { text: 'OK', onPress: () => router.back() }
+        { text: 'OK', onPress: () => router.replace('/mainapp/home') }
       ]);
     } catch (error) {
        Alert.alert('Error', error.response?.data?.message || 'Failed to add member');
