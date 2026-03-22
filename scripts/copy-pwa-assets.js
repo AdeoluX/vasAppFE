@@ -25,6 +25,18 @@ copy(path.join(ASSETS, 'logo.png'), path.join(DIST, 'icon-512.png'));
 copy(path.join(PUBLIC, 'manifest.json'),     path.join(DIST, 'manifest.json'));
 copy(path.join(PUBLIC, 'service-worker.js'), path.join(DIST, 'service-worker.js'));
 
+// Patch dist/service-worker.js — inject a build version/timestamp into CACHE_NAME
+console.log('\n🏷️  Versioning dist/service-worker.js\n');
+const swPath = path.join(DIST, 'service-worker.js');
+let swContent = fs.readFileSync(swPath, 'utf8');
+const buildId = new Date().getTime();
+swContent = swContent.replace(
+  /const CACHE_NAME = '([^']+)';/,
+  `const CACHE_NAME = '$1-build-${buildId}';`
+);
+fs.writeFileSync(swPath, swContent);
+console.log(`  ✓ Updated CACHE_NAME to include build ID: ${buildId}`);
+
 // Patch dist/index.html — inject PWA meta tags into <head>
 console.log('\n🔧 Patching dist/index.html with PWA meta tags\n');
 const indexPath = path.join(DIST, 'index.html');
@@ -60,22 +72,13 @@ const PWA_TAGS = `
       box-shadow: none !important;
     }
   </style>
-  <!-- PWA: Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(function(r){ console.log('[SW] Registered:', r.scope); })
-          .catch(function(e){ console.warn('[SW] Failed:', e); });
-      });
-    }
-  </script>`;
+  <!-- PWA: Service Worker handled via React/App logic for update notifications -->`;
 
 // Inject before </head>
 if (html.includes('</head>')) {
   html = html.replace('</head>', PWA_TAGS + '\n</head>');
   fs.writeFileSync(indexPath, html);
-  console.log('  ✓ Injected manifest link, theme-color, apple-touch-icon, SW registration');
+  console.log('  ✓ Injected manifest link, theme-color, apple-touch-icon');
 } else {
   console.warn('  ⚠ Could not find </head> in dist/index.html — skipping patch');
 }

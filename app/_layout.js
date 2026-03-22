@@ -8,13 +8,40 @@ import GlobalAlert from '../components/GlobalAlert';
 export default function RootLayout() {
   const router = useRouter();
 
-  // Register service worker on web
+  // Register service worker on web with update notification support
   useEffect(() => {
     if (Platform.OS === 'web' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/service-worker.js')
-        .then((reg) => console.log('[SW] Registered:', reg.scope))
+        .then((registration) => {
+          console.log('[SW] Registered:', registration.scope);
+
+          // Handle updates
+          registration.onupdatefound = () => {
+             const installingWorker = registration.installing;
+             if (installingWorker) {
+               installingWorker.onstatechange = () => {
+                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // A new service worker is available and waiting
+                    if (window.confirm('A new version of vasApp is available! Would you like to update now?')) {
+                      installingWorker.postMessage({ type: 'SKIP_WAITING' });
+                      window.location.reload();
+                    }
+                 }
+               };
+             }
+          };
+        })
         .catch((err) => console.warn('[SW] Registration failed:', err));
+
+      // Refresh when the new service worker takes over
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload();
+        }
+      });
     }
   }, []);
 
