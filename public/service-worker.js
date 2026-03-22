@@ -114,12 +114,15 @@ self.addEventListener('push', (event) => {
         // Also send a message to focused clients to show an in-app toast
         return self.clients.matchAll({ type: 'window', includeUncontrolled: true })
           .then((clients) => {
+            console.log('[SW] Matching clients found:', clients.length);
             clients.forEach((client) => {
+              console.log('[SW] Sending SHOW_TOAST to client:', client.id, 'State:', client.visibilityState);
               if (client.visibilityState === 'visible') {
                 client.postMessage({
                   type: 'SHOW_TOAST',
                   payload: { title: data.title, body: data.body }
                 });
+                console.log('[SW] SHOW_TOAST sent to client:', client.id);
               }
             });
           });

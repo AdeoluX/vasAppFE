@@ -13,6 +13,7 @@ function AppContent() {
   useEffect(() => {
     if (Platform.OS === 'web' && 'serviceWorker' in navigator) {
       const handleMessage = (event) => {
+        console.log('[App] Message received from SW:', event.data);
         if (event.data && event.data.type === 'SHOW_TOAST') {
           showToast(event.data.payload.title, event.data.payload.body);
         }
