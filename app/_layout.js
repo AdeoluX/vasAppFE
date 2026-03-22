@@ -3,7 +3,34 @@ import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { Platform } from 'react-native';
 import { AuthProvider } from '../context/AuthContext';
+import { ToastProvider, useToast } from '../context/ToastContext';
 import GlobalAlert from '../components/GlobalAlert';
+
+// Separate component to use Toast hook
+function AppContent() {
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    if (Platform.OS === 'web' && 'serviceWorker' in navigator) {
+      const handleMessage = (event) => {
+        if (event.data && event.data.type === 'SHOW_TOAST') {
+          showToast(event.data.payload.title, event.data.payload.body);
+        }
+      };
+      
+      navigator.serviceWorker.addEventListener('message', handleMessage);
+      return () => navigator.serviceWorker.removeEventListener('message', handleMessage);
+    }
+  }, [showToast]);
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="splash" />
+      <Stack.Screen name="authentication" />
+      <Stack.Screen name="mainapp" />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const router = useRouter();
@@ -47,12 +74,10 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="splash" />
-        <Stack.Screen name="authentication" />
-        <Stack.Screen name="mainapp" />
-      </Stack>
-      <GlobalAlert />
+      <ToastProvider>
+        <AppContent />
+        <GlobalAlert />
+      </ToastProvider>
     </AuthProvider>
   );
 }

@@ -108,7 +108,22 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(data.title, options)
-      .then(() => console.log('[SW] Notification shown successfully'))
+      .then(() => {
+        console.log('[SW] Notification shown successfully');
+        
+        // Also send a message to focused clients to show an in-app toast
+        return self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+          .then((clients) => {
+            clients.forEach((client) => {
+              if (client.visibilityState === 'visible') {
+                client.postMessage({
+                  type: 'SHOW_TOAST',
+                  payload: { title: data.title, body: data.body }
+                });
+              }
+            });
+          });
+      })
       .catch(err => console.error('[SW] Failed to show notification:', err))
   );
 });
