@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, Pressable } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Theme } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -66,7 +66,7 @@ export default function AddMember() {
         <View style={{ width: 24 }} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <Text style={styles.label}>Member Email</Text>
         <TextInput
           style={styles.input}
@@ -97,9 +97,15 @@ export default function AddMember() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity 
-          style={[styles.addBtn, loading && { opacity: 0.7 }]} 
-          onPress={handleAddMember}
+        <Pressable 
+          style={({ pressed }) => [
+            styles.addBtn, 
+            (loading || pressed) && { opacity: 0.7 }
+          ]} 
+          onPress={() => {
+            console.log('Button Pressable ONPRESS triggered');
+            handleAddMember();
+          }}
           disabled={loading}
         >
           {loading ? (
@@ -107,7 +113,7 @@ export default function AddMember() {
           ) : (
              <Text style={styles.addBtnText}>Add Member</Text>
           )}
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
