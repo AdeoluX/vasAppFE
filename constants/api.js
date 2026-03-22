@@ -72,6 +72,15 @@ export const resetPassword = async (data) => {
     }
 };
 
+export const setPassword = async (data) => {
+    try {
+        const response = await api.post('/auth/set-password', data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const getProfile = async () => {
     try {
         const response = await api.get('/auth/profile');
@@ -104,6 +113,24 @@ export const getGroupMembers = async (groupId) => {
         const response = await api.get('/group/members', {
             params: { groupId }
         });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const verifyInvitation = async (token) => {
+    try {
+        const response = await api.get(`/group/invite/verify/${token}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const acceptInvitation = async (data) => {
+    try {
+        const response = await api.post('/group/invite/accept', data);
         return response.data;
     } catch (error) {
         throw error;
