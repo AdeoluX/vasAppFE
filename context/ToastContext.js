@@ -6,8 +6,13 @@ import { Ionicons } from '@expo/vector-icons';
 const ToastContext = createContext();
 
 export const ToastProvider = ({ children }) => {
+  const [isHydrated, setIsHydrated] = useState(false);
   const [toast, setToast] = useState(null);
   const slideAnim = useRef(new Animated.Value(-100)).current;
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const showToast = useCallback((title, body, type = 'info') => {
     setToast({ title, body, type });
@@ -37,7 +42,7 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={{ showToast, hideToast }}>
       {children}
-      {toast && (
+      {isHydrated && toast && (
         <Animated.View 
           style={[
             styles.toastContainer, 

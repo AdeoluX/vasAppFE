@@ -69,15 +69,21 @@ export default function RootLayout() {
   // to avoid large HTML mismatches, but usually rendering null or 
   // the exact server-side HTML is best.
   
+  const content = (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="splash" />
+      <Stack.Screen name="authentication" />
+      <Stack.Screen name="mainapp" />
+    </Stack>
+  );
+
+  if (!isHydrated) return content;
+
   return (
     <AuthProvider>
       <ToastProvider>
         <ServiceWorkerHandler>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="splash" />
-            <Stack.Screen name="authentication" />
-            <Stack.Screen name="mainapp" />
-          </Stack>
+          {content}
           <GlobalAlert />
         </ServiceWorkerHandler>
       </ToastProvider>
