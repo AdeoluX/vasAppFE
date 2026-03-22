@@ -98,13 +98,10 @@ export const getGroup = async () => {
 };
 
 export const addGroupMember = async (memberData) => {
-    console.log('addGroupMember API called with:', memberData);
     try {
         const response = await api.post('/group/member/add', memberData);
-        console.log('addGroupMember API success:', response.data);
         return response.data;
     } catch (error) {
-        console.error('addGroupMember API error:', error.response?.data || error.message);
         throw error;
     }
 };

@@ -9,6 +9,7 @@ import * as api from '../../constants/api';
 export default function AddMember() {
   const router = useRouter();
   const { user } = useAuth();
+  const { groupId: paramGroupId } = useLocalSearchParams();
   
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -16,17 +17,13 @@ export default function AddMember() {
   const [loading, setLoading] = useState(false);
 
   const handleAddMember = async () => {
-    console.log('handleAddMember called');
     if (!email || !phone || !spendLimit) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
-    const { groupId: paramGroupId } = useLocalSearchParams();
     const groupId = paramGroupId || user?.groupId || user?.groups?.[0]?._id;
     
-    console.log('Resolved groupId:', groupId);
-
     if (!groupId) {
       Alert.alert('App Error', 'Missing group ID. Please go back to the dashboard and try again.');
       return;
@@ -41,15 +38,12 @@ export default function AddMember() {
         spendLimit: Number(spendLimit),
       };
 
-      console.log('Adding member with payload:', payload);
-      const res = await api.addGroupMember(payload);
-      console.log('Add member response:', res);
+      await api.addGroupMember(payload);
       
       Alert.alert('Success', 'Member invited. They will receive an SMS with the app link.', [
         { text: 'OK', onPress: () => router.back() }
       ]);
     } catch (error) {
-       console.error('Add member error:', error);
        Alert.alert('Error', error.response?.data?.message || 'Failed to add member');
     } finally {
       setLoading(false);
