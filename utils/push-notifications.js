@@ -1,17 +1,27 @@
 import { Platform } from 'react-native';
 import * as api from '../constants/api';
 
-const VAPID_PUBLIC_KEY = process.env.EXPO_PUBLIC_VAPID_KEY || 'BML...'; // User needs to provide this
+const VAPID_PUBLIC_KEY = process.env.EXPO_PUBLIC_VAPID_KEY || 'BCkiQ8IJzLA5mt17GoM-bvKJ_uVHee-h-oIgal9AIb682dtlHnXn0qKqWcVinW_18aq9-6fK0m7-8f-Q-QbikAY';
 
 function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
+  if (!base64String || base64String === 'BML...') {
+    console.error('VAPID Public Key is missing or invalid. Please set EXPO_PUBLIC_VAPID_KEY.');
+    return null;
   }
-  return outputArray;
+
+  try {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  } catch (e) {
+    console.error('Failed to decode VAPID public key:', e);
+    return null;
+  }
 }
 
 export async function registerForPushNotificationsAsync() {
