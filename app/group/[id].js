@@ -56,7 +56,13 @@ export default function GroupDashboard() {
       else if (membersRes.data?.members) fetchedMembers = membersRes.data.members;
       else if (membersRes.members) fetchedMembers = membersRes.members;
       
-      setMembers(fetchedMembers);
+      // Filter out current user from the list
+      const otherMembers = fetchedMembers.filter(m => {
+        const memberUserId = m.user?._id || m.userId?._id || m.userId;
+        return memberUserId !== user._id && memberUserId !== user.id;
+      });
+
+      setMembers(otherMembers);
 
     } catch (error) {
       console.error('Failed to fetch group dashboard data', error);
@@ -137,11 +143,17 @@ export default function GroupDashboard() {
               <View key={idx} style={styles.memberRow}>
                 <View style={styles.memberAvatar}>
                   <Text style={styles.avatarText}>
-                    {(member.name || member.email || 'M').charAt(0).toUpperCase()}
+                    {(member.user?.firstName || member.userId?.firstName || member.name || member.email || 'M').charAt(0).toUpperCase()}
                   </Text>
                 </View>
                 <View style={styles.memberInfo}>
-                  <Text style={styles.memberName}>{member.name || member.email || member.phone}</Text>
+                  <Text style={styles.memberName}>
+                    {member.user?.firstName && member.user?.lastName 
+                      ? `${member.user.firstName} ${member.user.lastName}` 
+                      : (member.userId?.firstName && member.userId?.lastName 
+                        ? `${member.userId.firstName} ${member.userId.lastName}` 
+                        : (member.name || member.email || member.phone))}
+                  </Text>
                   <Text style={styles.memberStatus}>{member.status || 'Active'}</Text>
                 </View>
                 <Text style={styles.memberLimit}>₦{member.spendLimit || 0}</Text>

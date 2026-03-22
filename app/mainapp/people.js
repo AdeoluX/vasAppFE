@@ -29,7 +29,13 @@ export default function People() {
       else if (res.data?.members) fetchedMembers = res.data.members;
       else if (res.members) fetchedMembers = res.members;
       
-      setMembers(fetchedMembers);
+      // Filter out current user from the list
+      const otherMembers = fetchedMembers.filter(m => {
+        const memberUserId = m.user?._id || m.userId?._id || m.userId;
+        return memberUserId !== user._id && memberUserId !== user.id;
+      });
+
+      setMembers(otherMembers);
     } catch (error) {
       console.error('Failed to fetch members', error);
     } finally {
@@ -41,12 +47,18 @@ export default function People() {
     <TouchableOpacity style={styles.memberCard}>
       <View style={styles.memberAvatar}>
         <Text style={styles.avatarText}>
-          {item.name ? item.name.charAt(0).toUpperCase() : 'M'}
+          {(item.user?.firstName || item.userId?.firstName || item.name || item.email || 'M').charAt(0).toUpperCase()}
         </Text>
       </View>
       <View style={styles.memberInfo}>
-        <Text style={styles.memberName}>{item.name || item.email}</Text>
-        <Text style={styles.memberPhone}>{item.phone}</Text>
+        <Text style={styles.memberName}>
+          {item.user?.firstName && item.user?.lastName 
+            ? `${item.user.firstName} ${item.user.lastName}` 
+            : (item.userId?.firstName && item.userId?.lastName 
+              ? `${item.userId.firstName} ${item.userId.lastName}` 
+              : (item.name || item.email || item.phone))}
+        </Text>
+        <Text style={styles.memberPhone}>{item.user?.phone || item.userId?.phone || item.phone}</Text>
       </View>
       <View style={styles.memberStats}>
         <Text style={styles.limitText}>₦{item.spentThisMonth || 0} / ₦{item.spendLimit || 0}</Text>
