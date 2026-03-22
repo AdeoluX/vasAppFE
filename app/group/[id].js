@@ -49,8 +49,17 @@ export default function GroupDashboard() {
       }));
       setTransactions(formattedData);
 
+      // Fetch Group Members
+      const membersRes = await api.getGroupMembers(id);
+      let fetchedMembers = [];
+      if (Array.isArray(membersRes.data)) fetchedMembers = membersRes.data;
+      else if (membersRes.data?.members) fetchedMembers = membersRes.data.members;
+      else if (membersRes.members) fetchedMembers = membersRes.members;
+      
+      setMembers(fetchedMembers);
+
     } catch (error) {
-      console.error('Failed to fetch group head data', error);
+      console.error('Failed to fetch group dashboard data', error);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -125,7 +134,18 @@ export default function GroupDashboard() {
             </View>
           ) : (
             members.map((member, idx) => (
-                <View key={idx} style={styles.memberRow}><Text>{member.name}</Text></View>
+              <View key={idx} style={styles.memberRow}>
+                <View style={styles.memberAvatar}>
+                  <Text style={styles.avatarText}>
+                    {(member.name || member.email || 'M').charAt(0).toUpperCase()}
+                  </Text>
+                </View>
+                <View style={styles.memberInfo}>
+                  <Text style={styles.memberName}>{member.name || member.email || member.phone}</Text>
+                  <Text style={styles.memberStatus}>{member.status || 'Active'}</Text>
+                </View>
+                <Text style={styles.memberLimit}>₦{member.spendLimit || 0}</Text>
+              </View>
             ))
           )}
         </View>
@@ -225,11 +245,46 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   memberRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: Theme.spacing.md,
     backgroundColor: Theme.colors.surface,
     marginBottom: 8,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: Theme.colors.border,
+  },
+  memberAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Theme.colors.primary + '20',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: Theme.spacing.md,
+  },
+  avatarText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Theme.colors.primary,
+  },
+  memberInfo: {
+    flex: 1,
+  },
+  memberName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Theme.colors.text,
+  },
+  memberStatus: {
+    fontSize: 11,
+    color: Theme.colors.textSecondary,
+    marginTop: 2,
+    textTransform: 'capitalize',
+  },
+  memberLimit: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Theme.colors.text,
   }
 });

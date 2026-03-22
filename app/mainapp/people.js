@@ -22,11 +22,13 @@ export default function People() {
     
     setRefreshing(true);
     try {
-      // Per PDF: "The profile endpoint (GET /api/v1/auth/profile) may return member data for a group head."
-      const res = await api.getProfile();
-      // Safely access the deeply nested members array based on conventional payload shapes.
-      // E.g. res.data.group.members OR res.data.members
-      const fetchedMembers = res.data?.group?.members || res.data?.members || [];
+      // Use specialized endpoint for group members
+      const res = await api.getGroupMembers(user?.groupId);
+      let fetchedMembers = [];
+      if (Array.isArray(res.data)) fetchedMembers = res.data;
+      else if (res.data?.members) fetchedMembers = res.data.members;
+      else if (res.members) fetchedMembers = res.members;
+      
       setMembers(fetchedMembers);
     } catch (error) {
       console.error('Failed to fetch members', error);

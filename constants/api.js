@@ -92,9 +92,22 @@ export const createGroup = async (groupData) => {
     }
 };
 
-export const getGroup = async () => {
-    const response = await api.get('/group');
+export const getGroup = async (groupId) => {
+    const response = await api.get('/group', {
+        params: { groupId }
+    });
     return response.data;
+};
+
+export const getGroupMembers = async (groupId) => {
+    try {
+        const response = await api.get('/group/members', {
+            params: { groupId }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const addGroupMember = async (memberData) => {
