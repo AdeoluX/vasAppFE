@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Theme } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
@@ -21,9 +21,11 @@ export default function AddMember() {
       return;
     }
 
-    const groupId = user?.groupId || user?.groups?.[0]?._id;
+    const { groupId: paramGroupId } = useLocalSearchParams();
+    const groupId = paramGroupId || user?.groupId || user?.groups?.[0]?._id;
+    
     if (!groupId) {
-      Alert.alert('App Error', 'Missing group ID. Please recreate your group.');
+      Alert.alert('App Error', 'Missing group ID. Please go back to the dashboard and try again.');
       return;
     }
 

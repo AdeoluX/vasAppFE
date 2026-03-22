@@ -73,7 +73,7 @@ export default function GroupDashboard() {
     {
       label: 'Add Member',
       icon: 'person-add-outline',
-      onPress: () => router.push('/group/add-member')
+      onPress: () => router.push({ pathname: '/group/add-member', params: { groupId: id } })
     }
   ] : [
     {
@@ -119,7 +119,7 @@ export default function GroupDashboard() {
             <View style={styles.emptyState}>
               <Ionicons name="people-outline" size={48} color={Theme.colors.textSecondary} style={{ opacity: 0.5 }} />
               <Text style={styles.emptyStateText}>Your family group is empty.</Text>
-              <TouchableOpacity style={styles.addBtn} onPress={() => router.push('/group/add-member')}>
+              <TouchableOpacity style={styles.addBtn} onPress={() => router.push({ pathname: '/group/add-member', params: { groupId: id } })}>
                 <Text style={styles.addBtnText}>Add your first member</Text>
               </TouchableOpacity>
             </View>
