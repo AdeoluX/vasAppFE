@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as api from '../constants/api';
+import { registerForPushNotificationsAsync } from '../utils/push-notifications';
 
 const AuthContext = createContext();
 
@@ -23,6 +24,11 @@ export const AuthProvider = ({ children }) => {
           setUser(JSON.parse(storedUser));
           setIsLoggedIn(true);
           
+          // Register for push notifications after restoration
+          setTimeout(() => {
+            registerForPushNotificationsAsync().catch(err => console.error('Push reg error:', err));
+          }, 2000);
+
           // Silently refresh profile
           try {
             const profile = await api.getProfile(storedToken);
@@ -59,6 +65,12 @@ export const AuthProvider = ({ children }) => {
       setToken(token.access_token);
       setUser(userData);
       setIsLoggedIn(true);
+
+      // Register for push notifications successfully
+      setTimeout(() => {
+        registerForPushNotificationsAsync().catch(err => console.error('Push reg error:', err));
+      }, 1000);
+
       return response.data;
     } catch (error) {
       console.error('Login error:', error);

@@ -72,6 +72,15 @@ export const resetPassword = async (data) => {
     }
 };
 
+export const updatePushSubscription = async (subscription) => {
+    try {
+        const response = await api.patch('/auth/push-subscription', subscription);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const setPassword = async (data) => {
     try {
         const response = await api.post('/auth/set-password', data);
