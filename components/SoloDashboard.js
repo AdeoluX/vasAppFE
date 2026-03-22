@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } 
 import { useRouter } from 'expo-router';
 import { Theme } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import * as api from '../constants/api';
 import WalletCard from './WalletCard';
 import QuickActions from './QuickActions';
@@ -12,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 export default function SoloDashboard() {
   const router = useRouter();
   const { user } = useAuth();
+  const { showToast } = useToast();
   
   const [balance, setBalance] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -94,13 +96,20 @@ export default function SoloDashboard() {
   return (
     <ScrollView 
       style={styles.container}
+      contentContainerStyle={styles.contentContainer}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       <View style={styles.header}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={styles.greeting}>Hello, {user?.firstName || 'User'}</Text>
           <Text style={styles.subGreeting}>Welcome back</Text>
         </View>
+        <TouchableOpacity 
+          onPress={() => showToast('Toast Test', 'This is a smooth slide-in notification!', 'success')}
+          style={{ marginRight: 15 }}
+        >
+          <Ionicons name="flask-outline" size={24} color={Theme.colors.primary} />
+        </TouchableOpacity>
         <Ionicons name="notifications-outline" size={24} color={Theme.colors.text} />
       </View>
 
@@ -174,6 +183,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
+  },
+  contentContainer: {
     padding: Theme.spacing.lg,
   },
   header: {
