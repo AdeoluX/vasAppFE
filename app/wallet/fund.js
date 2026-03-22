@@ -5,11 +5,7 @@ import { Theme } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import * as api from '../../constants/api';
 
-// WebView is native-only — import conditionally to avoid crashing on web
-let WebView = null;
-if (Platform.OS !== 'web') {
-  WebView = require('react-native-webview').default;
-}
+import WebView from '../../components/WebView';
 
 export default function FundWallet() {
   const router = useRouter();
@@ -65,55 +61,15 @@ export default function FundWallet() {
     true; // note: this is required, or you'll sometimes get silent failures
   `;
 
-  // ── Web: render an iframe ──────────────────────────────────────────────
-  const iframeContainerRef = useRef(null);
-
-  useEffect(() => {
-    if (Platform.OS !== 'web' || !checkoutUrl || !iframeContainerRef.current) return;
-
-    const iframe = document.createElement('iframe');
-    iframe.src = checkoutUrl;
-    iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
-    iframe.title = 'Payment';
-    iframeContainerRef.current.appendChild(iframe);
-
-    // Listen for Paystack postMessage success
-    const handleMessage = (e) => {
-      if (String(e.data).includes('SUCCESS') || String(e.data).includes('success')) {
-        setTimeout(() => router.replace('/mainapp/home'), 3000);
-      }
-    };
-    window.addEventListener('message', handleMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-      if (iframeContainerRef.current && iframeContainerRef.current.contains(iframe)) {
-        iframeContainerRef.current.removeChild(iframe);
-      }
-    };
-  }, [checkoutUrl]);
-
-  if (checkoutUrl && Platform.OS === 'web') {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: Theme.colors.surface }}>
-        <View style={styles.webviewHeader}>
-          <TouchableOpacity onPress={() => setCheckoutUrl(null)} style={styles.closeBtn}>
-            <Ionicons name="close" size={28} color={Theme.colors.text} />
-            <Text style={styles.closeBtnText}>Close &amp; Return</Text>
-          </TouchableOpacity>
-        </View>
-        {/* iframe injected here by useEffect */}
-        <View ref={iframeContainerRef} style={{ flex: 1 }} />
-      </SafeAreaView>
-    );
-  }
-
-  // ── Native: render react-native-webview ────────────────────────────────
+  // The Universal WebView component now handles both Web (iframe) and Native (react-native-webview)
   if (checkoutUrl) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Theme.colors.surface }}>
         <View style={styles.webviewHeader}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.closeBtn}>
+          <TouchableOpacity 
+            onPress={() => Platform.OS === 'web' ? setCheckoutUrl(null) : router.back()} 
+            style={styles.closeBtn}
+          >
             <Ionicons name="close" size={28} color={Theme.colors.text} />
             <Text style={styles.closeBtnText}>Close & Return</Text>
           </TouchableOpacity>
@@ -125,7 +81,8 @@ export default function FundWallet() {
           startInLoadingState={true}
           injectedJavaScript={INJECTED_JAVASCRIPT}
           onMessage={(event) => {
-            if (event.nativeEvent.data === 'SUCCESS') {
+            const data = event.nativeEvent?.data || event.data;
+            if (data === 'SUCCESS' || (typeof data === 'string' && (data.includes('SUCCESS') || data.includes('success')))) {
               // Automatically navigate back home after 3 seconds of showing the success receipt
               setTimeout(() => {
                 router.replace('/mainapp/home');
