@@ -1,13 +1,12 @@
 import { Stack } from 'expo-router';
-import { useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { AuthProvider } from '../context/AuthContext';
 import { ToastProvider, useToast } from '../context/ToastContext';
 import GlobalAlert from '../components/GlobalAlert';
 
-// Separate component to use Toast hook
-function AppContent() {
+// Component to handle service worker messages and toast
+function ServiceWorkerHandler({ children }) {
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -24,33 +23,27 @@ function AppContent() {
     }
   }, [showToast]);
 
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="splash" />
-      <Stack.Screen name="authentication" />
-      <Stack.Screen name="mainapp" />
-    </Stack>
-  );
+  return children;
 }
 
 export default function RootLayout() {
-  const router = useRouter();
+  const [isHydrated, setIsHydrated] = useState(false);
 
-  // Register service worker on web with update notification support
   useEffect(() => {
+    setIsHydrated(true);
+
+    // Register service worker on web with update notification support
     if (Platform.OS === 'web' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/service-worker.js')
         .then((registration) => {
           console.log('[SW] Registered:', registration.scope);
 
-          // Handle updates
           registration.onupdatefound = () => {
              const installingWorker = registration.installing;
              if (installingWorker) {
                installingWorker.onstatechange = () => {
                  if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // A new service worker is available and waiting
                     if (window.confirm('A new version of vasApp is available! Would you like to update now?')) {
                       installingWorker.postMessage({ type: 'SKIP_WAITING' });
                       window.location.reload();
@@ -62,7 +55,6 @@ export default function RootLayout() {
         })
         .catch((err) => console.warn('[SW] Registration failed:', err));
 
-      // Refresh when the new service worker takes over
       let refreshing = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -73,11 +65,21 @@ export default function RootLayout() {
     }
   }, []);
 
+  // Return a simple loading state or the same structure if not hydrated
+  // to avoid large HTML mismatches, but usually rendering null or 
+  // the exact server-side HTML is best.
+  
   return (
     <AuthProvider>
       <ToastProvider>
-        <AppContent />
-        <GlobalAlert />
+        <ServiceWorkerHandler>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="splash" />
+            <Stack.Screen name="authentication" />
+            <Stack.Screen name="mainapp" />
+          </Stack>
+          <GlobalAlert />
+        </ServiceWorkerHandler>
       </ToastProvider>
     </AuthProvider>
   );
